@@ -5,6 +5,15 @@ namespace App;
 use Exception;
 class Session
 {
+    private static $csrfTokens = [];
+
+    public static function start(): void
+    {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+    }
+    
     public static function get(string $key)
     {
         return $_SESSION[$key] ?? null;
@@ -85,5 +94,21 @@ class Session
             http_response_code(401);
             return json_encode(['success' => false, 'message' => "Login failed: " . $e->getMessage()]);
         }
+    }
+
+    public static function setCsrfToken(string $formName): void
+    {
+        $token = bin2hex(random_bytes(32));
+        self::$csrfTokens[$formName] = $token;
+    }
+
+    public static function getCsrfToken(string $formName): ?string
+    {
+        return self::$csrfTokens[$formName] ?? null;
+    }
+
+    public static function validateCsrfToken(string $formName, string $token): bool
+    {
+        return isset(self::$csrfTokens[$formName]) && hash_equals(self::$csrfTokens[$formName], $token);
     }
 }

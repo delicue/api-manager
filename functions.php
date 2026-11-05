@@ -17,12 +17,18 @@ function jsonData(string $path)
     require __DIR__ . "/data/{$path}.json";
 }
 
-function dd($data)
-{
-    echo '<pre>';
-    var_dump($data);
-    echo '</pre>';
-    exit();
+/**
+ * Check if Laravel Herd (or other platform) has defined this function already.
+ * If not, then let it be defined here.
+ */
+if(!function_exists('dd')) {
+    function dd(iterable $data)
+    {
+        echo '<pre>';
+        var_dump($data);
+        echo '</pre>';
+        exit();
+    }
 }
 
 function app(string | array $path): void
