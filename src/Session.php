@@ -19,7 +19,7 @@ class Session
         return $_SESSION[$key] ?? null;
     }
 
-    public static function set(string $key, $value): void
+    public static function set(string $key, mixed $value): void
     {
         $_SESSION[$key] = $value;
     }
@@ -74,7 +74,7 @@ class Session
         }
     }
 
-    public static function login(string $username, $password): string|bool
+    public static function login(string $username, string $password): string|bool
     {
         try {
             $user = Database::getInstance()->fetchOne("select * from users where username = :username", [

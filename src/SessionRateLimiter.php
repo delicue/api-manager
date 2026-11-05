@@ -3,15 +3,8 @@
 namespace App;
 
 class SessionRateLimiter {
-    private $limit;
-    private $window; // in seconds
-    private $sessionKey;
 
-    public function __construct($limit, $window, $sessionKey = 'rate_limit_data') {
-        $this->limit = $limit;
-        $this->window = $window;
-        $this->sessionKey = $sessionKey;
-
+    public function __construct(private int $limit, private int $window, private string $sessionKey = 'rate_limit_data') {
         if (!isset($_SESSION[$this->sessionKey])) {
             $_SESSION[$this->sessionKey] = [];
         }

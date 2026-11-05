@@ -9,14 +9,14 @@ $router = new Router();
 $uri = parse_url($_SERVER['REQUEST_URI'] ?? '/')['path'];
 $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
 
-function getView($uri): void {  
+function getView(string $uri): void {  
     global $router;
     $router?->get($uri, function() use (&$uri): void {
         header('Content-Type: text/html');
         view(str_replace('/', '', $uri) ?: 'index');
     });
 }
-function fetchApiJson($table): void {
+function fetchApiJson(string $table): void {
     $apiKey = $_GET['apiKey'] ?? null;
     $db = DB::getInstance();
 

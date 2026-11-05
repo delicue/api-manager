@@ -8,10 +8,10 @@ use PDOStatement;
 
 class Database
 {
-    private static $instance;
+    private static Database $instance;
     private PDO $connection;
 
-    private function __construct($dsn)
+    private function __construct(string $dsn)
     {
         try {
             $this->connection = new PDO($dsn, options: [
@@ -32,19 +32,19 @@ class Database
         static::$instance = new self($dsn);
     }
 
-    public function query($query, $params = [])
+    public function query(string $query, $params = [])
     {
         $statement = $this->connection->prepare($query);
         $statement->execute($params);
         return $statement;
     }
 
-    public function fetch($query, $params = [])
+    public function fetch(string $query, $params = [])
     {
         return self::query($query, $params)->fetch();
     }
 
-    public function fetchAll($query, $params = [])
+    public function fetchAll(string $query, $params = [])
     {
         return self::query($query, $params)->fetchAll();
     }
@@ -53,7 +53,7 @@ class Database
      * Creates a new table in the database, automatically including an `id` column in the table.
      * @param string $table
      * @param array $columns
-     * @return void
+     * @return bool|PDOStatement
      */
     public function createTable(string $table, $columns): bool|PDOStatement {
         return self::query("CREATE TABLE IF NOT EXISTS $table (" . implode(', ', $columns) . ")", []);
@@ -74,7 +74,7 @@ class Database
         return (int) $stmt->fetchColumn();
     }
 
-    public function isValidApiKey($apiKey)
+    public function isValidApiKey(string $apiKey)
     {
         $stmt = $this->connection->prepare('SELECT COUNT(*) FROM api_keys WHERE api_key = :api_key');
         $stmt->bindParam(':api_key', $apiKey);
@@ -85,17 +85,17 @@ class Database
     /**
      * Finds a single record from the database.
      *
-     * @param [type] $query
+     * @param string $query
      * @param array $params
      * @return array|null
      */
-    public function fetchOne($query, $params = []): ?array {
+    public function fetchOne(string $query, $params = []): ?array {
         $stmt = self::query($query, $params);
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         return $result === false ? null : $result;
     }
 
-    public function createApiKey($apiKey): bool|PDOStatement {
+    public function createApiKey(string $apiKey): bool|PDOStatement {
         $statement = self::query("INSERT INTO api_keys (api_key) VALUES (:api_key)", [
             ':api_key' => $apiKey
         ]);

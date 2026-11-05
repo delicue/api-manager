@@ -1,10 +1,13 @@
 {
   "scripts": {
     "dev" : "npx @tailwindcss/cli -i ./views/css/tailwindstyles.css -o ./public/css/main.css --watch",
-    "build": ""
+    "build": "npx tailwindcss -i ./views/css/tailwindstyles.css -o ./public/css/main.css --minify"
   },
   "dependencies": {
     "@tailwindcss/cli": "^4.1.17",
     "tailwindcss": "^4.1.17"
+  },
+  "allowScripts": {
+    "@parcel/watcher": true
   }
 }
