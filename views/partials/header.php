@@ -16,7 +16,7 @@
                 <p class="text-slate-400 text-sm mt-1">Manage your API keys and fetch data effortlessly</p>
             </div>
             <!-- Login and Register buttons. On right side of screen -->
-            <div class="flex gap-4 space-x-4 border-2 border-sky-300 rounded-xl px-4 py-2">
+            <div class="flex gap-4 space-x-4 rounded-xl px-4 py-2">
                 <?php if (App\Session::isLoggedIn()): ?>
                     <div class="content-center">
                         <form method="POST" action="/logout" class="top-4 right-6">
